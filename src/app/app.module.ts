@@ -14,6 +14,7 @@ import { ToastModule } from "primeng/toast";
 import { RippleModule } from "primeng/ripple";
 import { CookieService } from "ngx-cookie-service";
 import { MessageService } from "primeng/api";
+import { AuthGuard } from "./guards/auth-guard.service";
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { MessageService } from "primeng/api";
     InputTextModule,
     ButtonModule,
     ToastModule,
-    RippleModule
+    RippleModule,
   ],
   providers: [CookieService, MessageService],
   bootstrap: [AppComponent]
