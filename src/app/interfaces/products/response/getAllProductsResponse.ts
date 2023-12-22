@@ -3,6 +3,7 @@ export interface GetAllProductsResponse {
   name: string,
   amount: number,
   description: string,
+  price: string,
   category: {
     id: string,
     name: string,
