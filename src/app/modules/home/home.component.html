@@ -1,0 +1,44 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="flex justify-content-center align-content-center text-center">
+      <!-- LOGIN !-->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubimitLogin()">
+        <p-card styleClass="mt-10" header="Login" subheader="Faça login com sua conta existente!" *ngIf="loginCard">
+          <div class="flex justify-content-center align-content-center text-center">
+            <input type="email" pInputText placeholder="Email" formControlName="email">
+          </div>
+          <div class="flex justify-content-center align-content-center text-center mt-3">
+            <input type="password" pInputText placeholder="Senha" formControlName="password">
+          </div>
+          <div class="flex justify-content-center align-content-center text-cent  er mt-3">
+            <button type="submit" pButton pRipple label="Login" [disabled]="!this.loginForm.valid"></button>
+          </div>
+          <span
+              class="flex justify-content-center align-content-center text-center mt-3 text-red-600 font-semibold cursor-pointer" (click)="resetFormsLogin()">Se não houver login, clique aqui!</span>
+        </p-card>
+      </form>
+
+      <!-- Criar conta !-->
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmitSignupForm()">
+        <p-card styleClass="mt-10" header="Crie sua conta" subheader="Crie sua conta gratuita" *ngIf="!loginCard">
+          <div class="flex justify-content-center align-content-center text-center mt-3">
+            <input type="name" pInputText placeholder="Nome" formControlName="name">
+          </div>
+          <div class="flex justify-content-center align-content-center text-center mt-3">
+            <input type="email" pInputText placeholder="Email" formControlName="email">
+          </div>
+            <span *ngIf="signupForm.get('email')?.touched && signupForm.get('email')?.hasError('email')" class="text-red-500 text-center" >Formato de email inválido.</span>
+            <span *ngIf="signupForm.get('email')?.touched && signupForm.get('email')?.hasError('required')" class="text-red-500 text-center">O e-mail é obrigatório.</span>
+          <div class="flex justify-content-center align-content-center text-center mt-3">
+            <input type="password" pInputText placeholder="Senha" formControlName="password">
+          </div>
+          <div class="flex justify-content-center align-content-center text-center mt-3">
+            <button type="submit" pButton pRipple label="Criar conta" [disabled]="!this.signupForm.valid"></button>
+          </div>
+          <span
+            class="flex justify-content-center align-content-center text-center mt-3 text-red-600 font-semibold cursor-pointer" (click)="resetForms()">Clique aqui para realizar o login!</span>
+        </p-card>
+      </form>
+    </div>
+  </div>
+</div>
