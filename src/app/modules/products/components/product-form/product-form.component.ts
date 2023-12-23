@@ -22,7 +22,6 @@ import { EditProductRequest } from "../../../../interfaces/products/request/Edit
 export class ProductFormComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
   @Output() onCloseDialog: EventEmitter<void> = new EventEmitter<void>();
-  private refDialog!: DynamicDialogRef
 
   public addProductForm = this.formBuild.group({
     name: ['', Validators.required],
@@ -55,7 +54,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
   constructor(
     private categoriesService: CategoryService, private formBuild: FormBuilder, private messageService: MessageService,
-    private router: Router, private productsService: ProductsService, private ref: DynamicDialogConfig, private productsDtService: ProductsTransferService
+    private router: Router, private productsService: ProductsService, private ref: DynamicDialogConfig, private productsDtService: ProductsTransferService, private refDialog: DynamicDialogRef
   ) {
   }
 
@@ -126,6 +125,9 @@ export class ProductFormComponent implements OnInit, OnDestroy {
             detail: 'Produto editado com sucesso',
             life: 2500
           });
+          setTimeout(() => {
+            this.refDialog.close();
+          }, 50);
         },
         error: error => {
           this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao editar produto', life: 2500 })
