@@ -1,5 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { GetCategoryResponse } from "../../../../interfaces/category/GetCategoryResponse";
+import { CateogryEvent } from "../../../../enums/cateogry/CateogryEvent";
+import { EditCategoryAction } from "../../../../interfaces/category/EditCategoryAction";
 
 @Component({
   selector: 'app-categories-table',
@@ -8,5 +10,18 @@ import { GetCategoryResponse } from "../../../../interfaces/category/GetCategory
 })
 export class CategoriesTableComponent {
   @Input() public categories: Array<GetCategoryResponse> = []
+  @Output() public categoryEvent = new EventEmitter<EditCategoryAction>
+  @Output() public deleteCategory = new EventEmitter<any>
   public categorySelectec!: GetCategoryResponse;
+  public addCategory = CateogryEvent.ADD_CATEGORY_EVENT
+  public editCategory = CateogryEvent.EDIT_CATEGORY_EVENT
+
+  handleDeleteCategoryEvent() {
+  }
+
+  handleCategoryEvent(action: string, id?: string, categoryName?: string) {
+    if (action && action !== '') {
+      this.categoryEvent.emit({ action, id, categoryName })
+    }
+  }
 }

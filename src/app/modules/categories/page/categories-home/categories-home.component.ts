@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CategoryService } from "../../../../services/category/category.service";
-import { DialogService } from "primeng/dynamicdialog";
+import { DialogService, DynamicDialogRef } from "primeng/dynamicdialog";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { Router } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
 import { GetCategoryResponse } from "../../../../interfaces/category/GetCategoryResponse";
+import { EventAction } from "../../../../interfaces/products/event/EventAction";
+import { CategoryFormComponent } from "../../component/category-form/category-form.component";
 
 @Component({
     selector: 'app-categories-home',
@@ -14,6 +16,7 @@ import { GetCategoryResponse } from "../../../../interfaces/category/GetCategory
 export class CategoriesHomeComponent implements OnInit, OnDestroy {
     private destroy$: Subject<void> = new Subject<void>();
     public categoriesDatas: Array<GetCategoryResponse> = [];
+    public ref!: DynamicDialogRef
 
     constructor(private categoryService: CategoryService, private dialogSerice: DialogService, private messageService: MessageService,
                 private confirmationService: ConfirmationService, private router: Router) {
@@ -41,6 +44,24 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
             this.router.navigate(['/dashboard'])
             }
         });
+    }
+
+    handleCategoryAction(event: EventAction) {
+        if (event) {
+            this.ref = this.dialogSerice.open(CategoryFormComponent, {
+                header: 'Nova categoria',
+                width: '70%',
+                contentStyle: { overflow: 'auto' },
+                baseZIndex: 10000,
+                maximizable: true,
+                data: {
+                    event: event
+                }
+            });
+            this.ref.onClose.pipe(takeUntil(this.destroy$)).subscribe({
+                next: () => this.getAllCategories()
+            })
+        }
     }
 
     ngOnDestroy() {
