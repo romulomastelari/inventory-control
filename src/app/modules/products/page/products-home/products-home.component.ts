@@ -23,6 +23,7 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log('confirmService', this.confirmService)
     this.getProductsDatas()
   }
 

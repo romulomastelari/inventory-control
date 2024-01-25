@@ -4,7 +4,7 @@ import { DynamicDialogRef } from "primeng/dynamicdialog";
 import { FormBuilder, Validators } from "@angular/forms";
 import { MessageService } from "primeng/api";
 import { CategoryService } from "../../../../services/category/category.service";
-import { CateogryEvent } from "../../../../enums/cateogry/CateogryEvent";
+import { CateogryEvent } from "../../../../enums/category/CateogryEvent";
 
 @Component({
   selector: 'app-category-form',

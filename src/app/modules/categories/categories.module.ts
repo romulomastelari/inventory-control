@@ -23,7 +23,6 @@ import { CategoriesTableComponent } from './component/categories-table/categorie
 import { CategoryFormComponent } from './component/category-form/category-form.component';
 
 
-
 @NgModule({
   declarations: [
     CategoriesHomeComponent,
@@ -32,7 +31,7 @@ import { CategoryFormComponent } from './component/category-form/category-form.c
   ],
   imports: [
     CommonModule,
-     FormsModule,
+    FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild(CATEGORIES_ROUTER),
     SharedModule,
@@ -46,10 +45,11 @@ import { CategoryFormComponent } from './component/category-form/category-form.c
     InputTextareaModule,
     InputNumberModule,
     DynamicDialogModule,
-DropdownModule,
+    DropdownModule,
     ConfirmDialogModule,
     TooltipModule
   ],
-  providers: [DialogService, ConfirmationService]
+  providers: [ConfirmationService, DialogService],
 })
-export class CategoriesModule { }
+export class CategoriesModule {
+}

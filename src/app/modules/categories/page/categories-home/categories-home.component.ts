@@ -7,6 +7,7 @@ import { Subject, takeUntil } from "rxjs";
 import { GetCategoryResponse } from "../../../../interfaces/category/GetCategoryResponse";
 import { EventAction } from "../../../../interfaces/products/event/EventAction";
 import { CategoryFormComponent } from "../../component/category-form/category-form.component";
+import { DeleteCategoryAction } from "../../../../interfaces/category/DeleteCategoryAction";
 
 @Component({
     selector: 'app-categories-home',
@@ -18,14 +19,13 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
     public categoriesDatas: Array<GetCategoryResponse> = [];
     public ref!: DynamicDialogRef
 
-    constructor(private categoryService: CategoryService, private dialogSerice: DialogService, private messageService: MessageService,
-                private confirmationService: ConfirmationService, private router: Router) {
+  constructor(private categoryService: CategoryService, private dialogService: DialogService, private messageService: MessageService,
+              private confirmService: ConfirmationService, private router: Router) {
     }
 
     ngOnInit() {
         this.getAllCategories();
     }
-
 
     getAllCategories() {
         this.categoryService.getAllCategories().pipe(takeUntil(this.destroy$)).subscribe({
@@ -48,7 +48,7 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
 
     handleCategoryAction(event: EventAction) {
         if (event) {
-            this.ref = this.dialogSerice.open(CategoryFormComponent, {
+          this.ref = this.dialogService.open(CategoryFormComponent, {
                 header: 'Nova categoria',
                 width: '70%',
                 contentStyle: { overflow: 'auto' },
@@ -64,7 +64,60 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
         }
     }
 
-    ngOnDestroy() {
+  handleDeleteCategoryAction(event: DeleteCategoryAction): void {
+    if (event) {
+      console.log(event)
+      this.confirmService.confirm({
+        message: `Deseja realmente excluir a categoria ${event.category_name}?`,
+        header: 'Confirmação de exclusão',
+        icon: 'pi pi-exclamation-triangle',
+        acceptLabel: 'Sim',
+        rejectLabel: 'Não',
+        accept: () => this.deleteCategory(event.category_id),
+        reject: () => {
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Informação',
+            detail: `Categoria ${event.category_name} não foi excluída`,
+            life: 2000,
+          })
+        }
+      })
+    }
+  }
+
+  deleteCategory(category_id: string): void {
+    if (category_id) {
+      this.categoryService
+        .deleteCategory(category_id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (response) => {
+            this.getAllCategories();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Sucesso',
+              detail: 'Categoria removida com sucesso!',
+              life: 3000,
+            });
+          },
+          error: (err) => {
+            console.log(err);
+            this.getAllCategories();
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erro',
+              detail: 'Erro ao remover categoria!',
+              life: 3000,
+            });
+          },
+        });
+
+      this.getAllCategories();
+    }
+  }
+
+  ngOnDestroy() {
         this.destroy$.next()
         this.destroy$.complete()
     }
