@@ -13,6 +13,7 @@ import { EventAction } from "../../../../interfaces/products/event/EventAction";
 import { GetAllProductsResponse } from "../../../../interfaces/products/response/getAllProductsResponse";
 import { ProductsTransferService } from "../../../../shared/services/products/products-transfer.service";
 import { EditProductRequest } from "../../../../interfaces/products/request/EditProductRequest";
+import { SaleProductRequest } from "../../../../interfaces/products/request/SaleProductRequest";
 
 @Component({
   selector: 'app-product-form',
@@ -37,6 +38,10 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     amount: [0, Validators.required],
     category_id: ['', Validators.required],
   })
+  public saleProductForm = this.formBuild.group({
+    amount: [0, [Validators.required, Validators.min(1)]],
+    product_id: ['', Validators.required],
+  })
 
   public categoriesDatas: Array<GetCategoryResponse> = [];
   public categoriesSelected: Array<{ name: string; code: string }> = []
@@ -51,6 +56,8 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   public addProductAction = ProductEvent.ADD_PRODUCT_EVENT
   public editProductAction = ProductEvent.EDIT_PRODUCT_EVENT
   public saleProductEvent = ProductEvent.SALE_PRODUCT_EVENT
+
+  // public saleProductSelected: GetAllProductsResponse | undefined
 
   constructor(
     private categoriesService: CategoryService, private formBuild: FormBuilder, private messageService: MessageService,
@@ -153,17 +160,60 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  getProductsDatas(): void {
+  getProductsDatas() {
     this.productsService.getAllProducts().pipe(takeUntil(this.destroy$)).subscribe(response => {
       if (response.length > 0) {
         this.productsDatas = response
         this.productsDatas && this.productsDtService.setProductsDatas(this.productsDatas)
       }
     })
+    return this.productsDatas
+  }
+
+  handleSubmitSaleProduct() {
+    if (this.saleProductForm.valid && this.saleProductForm.value) {
+      const requestDatas: SaleProductRequest = {
+        amount: Number(this.saleProductForm.value.amount),
+        product_id: this.saleProductForm.value.product_id as string
+      }
+
+      this.productsDatas?.forEach((product) => {
+        if (product.id === requestDatas.product_id && requestDatas.amount > product.amount) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro',
+            detail: `Quantidade de produtos acima do estoque.O produto ${product.name} possue ${product.amount} unidades totais.`,
+            life: 2500
+          });
+          return
+        }
+      });
+
+      this.productsService.saleProducts(requestDatas).pipe(takeUntil(this.destroy$)).subscribe({
+        next: (resp) => {
+          if (resp) {
+            this.getProductsDatas()
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Sucesso',
+              detail: 'Produto vendido com sucesso',
+              life: 2500
+            });
+            this.router.navigate(['/dashboard'])
+            setTimeout(() => {
+              this.refDialog.close();
+            }, 50);
+          }
+        }, error: (error) => {
+          this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao vender produto', life: 2500 })
+        }
+      })
+    }
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
 }

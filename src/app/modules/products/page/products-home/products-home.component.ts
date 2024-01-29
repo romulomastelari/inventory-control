@@ -23,16 +23,13 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log('confirmService', this.confirmService)
     this.getProductsDatas()
   }
 
   private getProductsDatas() {
     const productsLoaded = this.productsDTService.getProductsDatas()
-
     if (productsLoaded.length > 0) {
       this.productsList = productsLoaded
-      console.log('dadoss de produtos getProductsDatas', this.productsList)
     } else
       this.getAPIProductsDatas()
   }
@@ -42,11 +39,9 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
       next: (resp) => {
         if (resp.length > 0) {
           this.productsList = resp
-          console.log('dadoss de produtos getAPIProductsDatas', this.productsList)
         }
       },
       error: err => {
-        console.log('err', err)
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
