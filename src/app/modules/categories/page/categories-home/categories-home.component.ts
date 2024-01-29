@@ -100,6 +100,7 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
               detail: 'Categoria removida com sucesso!',
               life: 3000,
             });
+            this.getAllCategories();
           },
           error: (err) => {
             console.log(err);
@@ -112,8 +113,6 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
             });
           },
         });
-
-      this.getAllCategories();
     }
   }
 

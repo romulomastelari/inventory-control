@@ -1,6 +1,6 @@
 <div class="div">
   <div class="col-12">
-    <p-card styleClass="shadow m-5 text-indigo-500" header="Produtos em estoque">
+    <p-card styleClass="shadow-3 m-5 text-indigo-800" header="Produtos em estoque">
       <p-table
         #productsTable
         [value]="products"
@@ -137,7 +137,7 @@
             <td>{{ product?.amount }}</td>
             <td>{{ product?.price | currency : "BRL" }}</td>
             <td [pTooltip]="product?.description" tooltipPosition="top">
-              {{ product?.description }}
+              {{ product?.description | shorten:15 }}
             </td>
             <td>{{ product?.category?.name }}</td>
             <td>

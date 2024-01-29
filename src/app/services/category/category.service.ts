@@ -38,11 +38,11 @@ export class CategoryService {
     })
   }
 
-  editCategoryName(category_id: string, name: string): Observable<void> {
-    return this.http.put<void>(`${this.API_URL}/category/edit`, { name: name }, {
+  editCategoryName(requestDatas: {category_id: string, name: string}): Observable<void> {
+    return this.http.put<void>(`${this.API_URL}/category/edit`, { name: requestDatas?.name}, {
       ...this.httpOptions,
       params: {
-        category_id: category_id
+        category_id: requestDatas?.category_id
       }
     })
   }

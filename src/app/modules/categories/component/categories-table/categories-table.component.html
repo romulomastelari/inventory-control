@@ -39,12 +39,15 @@
                 </div>
               </div>
             </th>
+
             <th>
-              <div class="flex justify-content-center">
+              <div class="flex justify-content-end gap-3 align-content-end align-items-end">
                 <p-button
                   styleClass="p-button-info"
                   icon="pi pi-plus"
                   label="Adicionar"
+                  pTooltip="Adicionar produto"
+                  tooltipPosition="top"
                   (onClick)="handleCategoryEvent(addCategory)"
                 ></p-button>
               </div>
@@ -64,12 +67,17 @@
                   pRipple
                   icon="pi pi-pencil"
                   class="p-button-rounded p-button-warning"
+                  pTooltip="Editar Categoria"
+                  tooltipPosition="top"
+                  (click)="handleCategoryEvent(editCategory, category.id, category.name)"
                 ></button>
                 <button
                   pButton
                   pRipple
                   icon="pi pi-trash"
                   class="p-button-rounded p-button-danger"
+                  pTooltip="Excluir"
+                  tooltipPosition="top"
                   (click)="handleDeleteCategoryEvent(category?.id, category?.name)"
                 ></button>
               </div>

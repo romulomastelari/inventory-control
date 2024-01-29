@@ -47,4 +47,7 @@ export class ProductsService {
     return this.http.put<void>(`${this.API_URL}/product/edit`, requestDatas, this.httpOptions)
   }
 
+  saleProducts() {
+
+  }
 }
