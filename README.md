@@ -7,11 +7,11 @@
 <img alt="License" src="https://img.shields.io/static/v1?label=license&message=MIT&color=E51C44&labelColor=0A1033"/>
 </p>
 
-<h3 align="center">Imagem prévia da aplicação</h3>
+<h3 align="center">Vídeo prévio da aplicação</h3>
 
 <div align="center">
-  
-  ![PetLife - Google Chrome 2023-10-24 16-21-38](https://github.com/romulomastelari/petLife/assets/97125052/e932ec93-6762-40fd-bfb5-c966573fe35f)
+
+https://github.com/romulomastelari/inventory-control/assets/97125052/fa5a3a65-e4b6-41bf-989d-afd8c8f19cd2
 
 </div>
 
